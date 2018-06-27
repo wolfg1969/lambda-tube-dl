@@ -1,2 +1,2 @@
 # lambda-tube-dl
-Download Youtube Videos with AWS &amp;#120524;
+Download Youtube Videos with AWS &#120524;
