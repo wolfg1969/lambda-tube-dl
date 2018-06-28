@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <title>Youtube Video Downloader</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .embedded-video {
+            display: block;
+            height: 315px;
+            margin: 0 auto 20px auto;
+            width: 560px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 id="header">Downloading...</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <iframe
+                    allow="autoplay; encrypted-media"
+                    allowfullscreen
+                    class="embedded-video" src="https://www.youtube.com/embed/{{ videoId }}"
+                    frameborder="0"
+            >
+            </iframe>
+            <div class="progress progress-striped">
+                <div id="progress-bar" class="progress-bar" style="width: 0; opacity: 1;">
+                    0%
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    // Construct the API URLs from the current window location.
+    const currentLocation = window.location.toString();
+    const apiStagePrefix = '/{{ apiStage }}';
+    const apiPrefix = currentLocation.slice(0, currentLocation.indexOf(apiStagePrefix) + apiStagePrefix.length);
+    console.log(apiPrefix)
+    const apiCheckUrl = `${apiPrefix}/check`;
+    console.log(apiCheckUrl)
+
+    // Handle updating the progress bar.
+    const progressBar = document.getElementById('progress-bar');
+    const updateProgress = (progress) => {
+        if (progress >= 1) {
+            progressBar.innerHTML = 'Done!';
+            progressBar.innerHTML = `100%`;
+            progressBar.parentElement.classList.remove('progress-striped');
+            progressBar.style= `width: 100%; opacity: 1;`;
+        } else {
+            progressBar.innerHTML = `${Math.round(progress * 1000) / 10}%`;
+            progressBar.style= `width: ${progress * 100}%; opacity: 1;`;
+        }
+    };
+
+    // Check the current status of the downloading and update the progress.
+    const startPolling = (videoId) => {
+        const url = `${apiCheckUrl}?video_id=${videoId}`;
+        const header = document.getElementById('header');
+        const initialTime = Date.now();
+        const pollingInterval = 5000;
+        const poll = () => {
+            fetch(url)
+            .then(response => response.json())
+            .then(({ downloaded }) => {
+                if (!downloaded) {
+                    const progress = Math.min(1, (Date.now() - initialTime) / 300000);
+                    if (progress === 1) {
+                        header.innerHTML = 'Something went wrong :-(';
+                    } else {
+                        updateProgress(progress);
+                        setTimeout(poll, pollingInterval);
+                    }
+                } else {
+                    updateProgress(1);
+                    header.innerHTML = 'Downloading has completed successfully!';
+                }
+            });
+        };
+        poll();
+    };
+
+    startPolling('{{ videoId }}');
+</script>
+</body>
+</html>

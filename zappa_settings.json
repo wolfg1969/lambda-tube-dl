@@ -1,0 +1,9 @@
+{
+    "dev": {
+        "django_settings": "tube_dl_site.settings",
+        "profile_name": "myaws",
+        "project_name": "lambda-tube-dl",
+        "runtime": "python3.6",
+        "s3_bucket": "zappa-olaqgdcef"
+    }
+}
