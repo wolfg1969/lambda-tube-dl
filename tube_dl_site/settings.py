@@ -17,7 +17,9 @@ env = environ.Env(
     AWS_SESSION_TOKEN=(str, ''),
     AWS_S3_BUCKET_NAME=(str, ''),
 
-    STAGE=(str, '')
+    STAGE=(str, ''),
+
+    DOWNLOAD_URL_TIMEOUT=(int, 3600),  # one hour
 )  # set default values and casting
 environ.Env.read_env(project_root('.env')) # reading .env file
 
@@ -44,3 +46,5 @@ AWS_S3_BUCKET_NAME = env('AWS_S3_BUCKET_NAME')
 VIDEO_FORMAT = 'webm'
 
 LAMBDA_STAGE = env('STAGE')
+
+DOWNLOAD_URL_TIMEOUT = env('DOWNLOAD_URL_TIMEOUT')

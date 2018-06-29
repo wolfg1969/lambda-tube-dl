@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <title>Youtube Video Downloader - Files</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>Files</h2>
+    <div class="panel panel-default">
+        <div class="list-group">
+            {% for file in files %}
+            <a href="{{ file.url }}" class="list-group-item" target="_blank">{{ file.name }} ({{ file.last_modified }})</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

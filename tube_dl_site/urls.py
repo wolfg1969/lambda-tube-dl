@@ -20,6 +20,7 @@ from tube_dl import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('check/', views.check_video, name='check_video')
+    path('files/', views.files, name='files'),
+    path('check/', views.check_video, name='check_video'),
     # path('admin/', admin.site.urls),
 ]

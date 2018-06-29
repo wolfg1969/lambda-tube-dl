@@ -1,4 +1,5 @@
 import re
+from collections import namedtuple
 
 import boto3
 from botocore import exceptions
@@ -73,3 +74,25 @@ def check_video(request):
         downloaded = 1
 
     return JsonResponse({'downloaded': downloaded})
+
+
+VideoFile = namedtuple('VideoFile', ['name', 'url', 'last_modified'])
+
+
+def files(request):
+    files = []
+
+    s3 = boto3.resource('s3')
+    client = s3.meta.client
+    bucket = s3.Bucket(settings.AWS_S3_BUCKET_NAME)
+
+    for s3_file in bucket.objects.all():
+        key = s3_file.key
+        url = client.generate_presigned_url('get_object',
+                                            Params = {'Bucket': settings.AWS_S3_BUCKET_NAME, 'Key': key},
+                                            ExpiresIn = settings.DOWNLOAD_URL_TIMEOUT)
+        files.append(VideoFile(name=s3_file.key,
+                               url=url,
+                               last_modified=s3_file.last_modified))
+
+    return render(request, 'files.html', {'files': files})

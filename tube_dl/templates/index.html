@@ -38,9 +38,7 @@
     const currentLocation = window.location.toString();
     const apiStagePrefix = '/{{ apiStage }}';
     const apiPrefix = currentLocation.slice(0, currentLocation.indexOf(apiStagePrefix) + apiStagePrefix.length);
-    console.log(apiPrefix)
     const apiCheckUrl = `${apiPrefix}/check`;
-    console.log(apiCheckUrl)
 
     // Handle updating the progress bar.
     const progressBar = document.getElementById('progress-bar');
