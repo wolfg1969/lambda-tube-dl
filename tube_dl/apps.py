@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class TubeDlConfig(AppConfig):
+class Config(AppConfig):
     name = 'tube_dl'
